@@ -35,7 +35,9 @@ const convertFileToArray = logFile => {
       return parseFloat(value.replace(",", "."));
     }
     if (str === "timeLap") {
-      return new Date(`1970-01-01T${value}Z`)
+      arr = value.split(":")
+      timeLap = parseInt(arr[0]*60) + parseFloat(arr[1]);
+      return timeLap
     }
     return value;
   };
@@ -52,7 +54,11 @@ const convertFileToArray = logFile => {
     return arrObjects.push({ ...obj, none: undefined });
   });
 
-  return arrObjects;
+  let t = arrObjects.reduce((acc, cur) => {
+      return acc + cur.timeLap
+  }, 0)
+
+  return t;
 };
 
 module.exports = convertFileToArray;
