@@ -35,9 +35,9 @@ const convertFileToArray = logFile => {
       return parseFloat(value.replace(",", "."));
     }
     if (str === "timeLap") {
-      arr = value.split(":")
-      timeLap = parseInt(arr[0]*60) + parseFloat(arr[1]);
-      return timeLap
+      arr = value.split(":");
+      timeLap = parseInt(arr[0] * 60) + parseFloat(arr[1]);
+      return timeLap;
     }
     return value;
   };
@@ -55,10 +55,59 @@ const convertFileToArray = logFile => {
   });
 
   let t = arrObjects.reduce((acc, cur) => {
-      return acc + cur.timeLap
-  }, 0)
+    if (acc.length > 0) {
+      acc.map(item => {
+        if (item.pilotNumber === cur.pilotNumber) {
+          item.timeTotal = item.timeTotal + cur.timeLap;
+          item.laps = cur.lap;
+          item.bestLap =
+            item.bestLap <= cur.timeLap ? item.bestLap : cur.timeLap;
+          item.avgTimeTotal = (item.avgTimeTotal + cur.avgLap) / 2;
+          return item;
+        } else if (acc.find(item => item.pilotNumber === cur.pilotNumber)) {
+          console.log(cur.pilotNumber);
+          return;
+        } else {
+          return acc.push({
+            pilotNumber: cur.pilotNumber,
+            pilotName: cur.pilotName,
+            timeTotal: cur.timeLap,
+            laps: cur.lap,
+            bestLap: cur.timeLap,
+            avgTimeTotal: cur.avgLap
+          });
+        }
+      });
+    }
 
-  return t;
+    if (acc.length === 0) {
+      acc.push({
+        pilotNumber: cur.pilotNumber,
+        pilotName: cur.pilotName,
+        timeTotal: cur.timeLap,
+        laps: cur.lap,
+        bestLap: cur.timeLap,
+        avgTimeTotal: cur.avgLap
+      });
+    }
+
+    return acc;
+  }, []);
+
+  function compare(a, b) {
+    if (a.timeTotal < b.timeTotal) return -1;
+    if (a.timeTotal > b.timeTotal) return 1;
+    return 0;
+  }
+
+  let f = t.sort(compare);
+
+  f.map((item, index) => (item.ranking = index + 1));
+
+  return {
+    finishKart: f,
+    bestLapKart: Math.min(...f.map(item => item.bestLap))
+  };
 };
 
 module.exports = convertFileToArray;
