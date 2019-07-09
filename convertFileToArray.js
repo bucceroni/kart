@@ -102,7 +102,10 @@ const convertFileToArray = logFile => {
 
   let f = t.sort(compare);
 
-  f.map((item, index) => (item.ranking = index + 1));
+  f.map((item, index) => {
+    item.ranking = index + 1;
+    item.afterFinisher = item.timeTotal - f[0].timeTotal;
+  });
 
   return {
     finishKart: f,
