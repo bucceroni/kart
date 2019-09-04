@@ -24,5 +24,7 @@
   },
   "homepage": "https://github.com/bucceroni/kart#readme",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
 }

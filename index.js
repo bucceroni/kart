@@ -1,5 +1,5 @@
-const convertFileToArray = require('./convertFileToArray')
 const http = require('http');
+const { kart } = require('./kart')
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -7,7 +7,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(JSON.stringify(convertFileToArray('./log.txt')));
+  res.end(JSON.stringify(kart('./log.txt')));
 });
 
 server.listen(port, hostname, () => {
