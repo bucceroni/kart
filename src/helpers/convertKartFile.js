@@ -1,5 +1,4 @@
-const fs = require("fs");
-const { convertValue } = require("../helpers/convertValue");
+const { convertValue } = require("./convertValue");
 
 const nameFields = [
   "time",
@@ -13,9 +12,8 @@ const nameFields = [
 
 const convertKartFile = logFile => {
   let rows = [];
-  let data = fs.readFileSync(logFile).toString();
 
-  data
+  logFile
     .replace(/\t/g, " ")
     .split("\n")
     .map(item => {

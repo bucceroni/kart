@@ -1,4 +1,4 @@
-const { convertValue } = require("../helpers/convertValue");
+const { convertValue } = require("./convertValue");
 
 const kartRanking = (arr) => {
     const rating = sumLaps(arr)
